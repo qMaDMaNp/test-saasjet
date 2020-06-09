@@ -1,0 +1,102 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="main.css">
+        <title>SaaSJet</title>
+    </head>
+
+    <body>
+        <div class="container" style="padding:20px">
+            <form id="filter-form" action="/">
+                <select name='filter' id="filter">
+                    <option value="default">Default</option>
+                    <% if (filters.length) { %>
+                        <% filters.forEach((filter) => { %>
+                            <option <%= filterId == filter.id ? 'selected' : ''%> value="<%= filter.id %>"><%= filter.name %></option>
+                        <% }) %>
+                    <% } %>
+                </select>
+            </form>
+
+            <div class="task-table">
+                <table>
+                    <tbody>
+                        <tr>
+                            <th colspan="2"></th>
+                            <% statuses.forEach((status) => { %>
+                                <th><%= status %></th>
+                            <% }) %>
+                        </tr>
+
+                        <tr>
+                            <td>Assignee</td>
+                            <td>Type</td>
+                            <% statuses.forEach((status) => { %>
+                                <td>
+                                    <table>
+                                        <tr>
+                                            <% priorities.forEach((priority) => { %>
+                                            <td>
+                                                <span title="<%= priority.name %>" style="width: 16px;height: 16px;display: block;">
+                                                    <img src="<%= priority.iconUrl %>" alt=""/>
+                                                </span>
+                                            </td>
+                                            <% }) %>
+                                        </tr>
+                                    </table>
+                                </td>
+                            <% }) %>
+                        </tr>
+
+                        <% assignees.forEach((assignee) => { %>
+                            <tr>
+                                <td><%= assignee.name %></td>
+                                <td>
+                                    <table>
+                                        <% types.forEach((type) => { %>
+                                            <tr>
+                                                <td>
+                                                    <span title="<%= type.name %>" style="width: 16px;height: 18px;display: flex;">
+                                                        <img src="<%= type.iconUrl %>" alt=""/>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        <% }) %>
+                                    </table>
+                                </td>
+
+                                <% statuses.forEach((status) => { %>
+                                    <td>
+                                        <table style="width: 100%;">
+                                            <% types.forEach((type) => { %>
+                                                <tr>
+                                                    <% priorities.forEach((priority) => { %>
+                                                        <% let noPriority = true; %>
+                                                        <% assignee.issues.forEach((assigneeIssue) => { %>
+                                                            <% if (assigneeIssue.status == status && assigneeIssue.type == type.name && assigneeIssue.priority == priority.name) {%>
+                                                                <% noPriority = false; %>
+
+                                                                <td class="<%= (assigneeIssue.dueDateComparison ? 'due-date' : '') %> <%= (assigneeIssue.createdDateComparison ? 'create-date' : '') %>">
+                                                                    <a href="<%= assigneeIssue.link %>"><%= assigneeIssue.count %></a>
+                                                                </td>
+                                                            <% } %>
+                                                        <% }) %>
+                                                        <% if (noPriority) {%>
+                                                            <td>&nbsp;</td>
+                                                        <% } %>
+                                                    <% }) %>
+                                                </tr>
+                                            <% }) %>
+                                        </table>
+                                    </td>
+                                <% }) %>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
+        <script type="text/javascript" src="main.js"></script>
+    </body>
+</html>

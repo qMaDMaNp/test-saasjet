@@ -1,0 +1,32 @@
+.task-table {
+    overflow: auto;
+}
+
+.task-table table {
+    border-collapse: collapse;
+}
+
+.task-table th, .task-table td {
+     white-space: nowrap;
+     text-align: center;
+
+     padding: 8px 12px;
+     border: 1px solid #000;
+     letter-spacing: 0.5px;
+}
+
+.task-table td {
+    width: 12px;
+}
+
+.create-date {
+    background: rgb(255, 255, 200);
+}
+
+.due-date {
+    background: rgb(255, 235, 230);
+}
+
+.due-date.create-date {
+    background-image: linear-gradient(rgb(240, 183, 191), rgb(255, 250, 183));
+}
